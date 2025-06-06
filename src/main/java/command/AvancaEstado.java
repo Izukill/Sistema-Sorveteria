@@ -3,9 +3,12 @@ package command;
 import model.Pedido;
 import state.EstadoPedido;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class AvancaEstado implements Comando {
     private Pedido pedido;
-    private EstadoPedido estadoAnteior;
+    private ArrayList<EstadoPedido> historicoPedido=new ArrayList<>();
 
     public AvancaEstado(Pedido pedido) {
         this.pedido = pedido;
@@ -13,21 +16,26 @@ public class AvancaEstado implements Comando {
 
     @Override
     public void executar() {
-        estadoAnteior=pedido.getEstado();
+        historicoPedido.add(pedido.getEstado());
         pedido.getEstado().proximoEstado(pedido);
     }
 
     @Override
     public void desfazer() {
-        if(estadoAnteior==null){
+        if(historicoPedido.isEmpty()){
             System.out.println("Não há como desfazer");
         }else{
-            pedido.setEstado(estadoAnteior);
+            pedido.setEstado(historicoPedido.removeLast());
         }
 
     }
 
-    public EstadoPedido getEstadoAnteior() {
-        return estadoAnteior;
+    public EstadoPedido getEstadoAnteior() throws Exception {
+        if(historicoPedido.isEmpty()){
+            throw new Exception("Não há estado anterior");
+        }else{
+            return historicoPedido.getLast();
+        }
+
     }
 }

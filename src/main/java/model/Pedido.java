@@ -1,31 +1,38 @@
 package model;
 
 import state.EstadoPedido;
-import state.PedidoCancelado;
 import state.PedidoRecebido;
 
 public class Pedido {
 
-    private String pedido;
+    private String descricao;
     private Cliente cliente;
     private float preco;
     private EstadoPedido estado;
+    private long id;
 
-    public Pedido(Cliente cliente, String pedido, float preco) {
-        this.pedido = pedido;
+    public Pedido(Cliente cliente, String Descricao, float preco) {
+        this.descricao = Descricao;
         this.preco = preco;
         this.cliente=cliente;
         this.estado= new PedidoRecebido();
     }
 
 
-
-    public String getPedido() {
-        return pedido;
+    public long getId() {
+        return id;
     }
 
-    public void setPedido(String pedido) {
-        this.pedido = pedido;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public float getPreco() {
@@ -44,4 +51,11 @@ public class Pedido {
         this.estado = estado;
     }
 
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 }
