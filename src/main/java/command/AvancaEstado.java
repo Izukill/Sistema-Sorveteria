@@ -3,7 +3,6 @@ package command;
 import model.Pedido;
 import state.EstadoPedido;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class AvancaEstado implements Comando {
@@ -17,6 +16,8 @@ public class AvancaEstado implements Comando {
     @Override
     public void executar() {
         historicoPedido.add(pedido.getEstado());
+
+
         pedido.getEstado().proximoEstado(pedido);
     }
 
@@ -30,12 +31,6 @@ public class AvancaEstado implements Comando {
 
     }
 
-    public EstadoPedido getEstadoAnteior() throws Exception {
-        if(historicoPedido.isEmpty()){
-            throw new Exception("Não há estado anterior");
-        }else{
-            return historicoPedido.getLast();
-        }
 
-    }
+
 }

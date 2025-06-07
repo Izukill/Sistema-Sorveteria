@@ -1,6 +1,8 @@
 package model;
 
-public class Cliente {
+import observer.Assinante;
+
+public class Cliente implements Assinante {
     private String nome;
     private int Id;
 
@@ -33,5 +35,11 @@ public class Cliente {
     @Override
     public String toString() {
         return "Cliente = "+nome;
+    }
+
+    @Override
+    public void atualizar(String mensagem) {
+
+        System.out.println("O Pedido do Cliente: " + nome + " está" + mensagem);
     }
 }

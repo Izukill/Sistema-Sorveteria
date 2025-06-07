@@ -10,6 +10,6 @@ public class PedidoPreparando implements EstadoPedido{
 
     @Override
     public String getNome() {
-        return "Pedido preparando ;/";
+        return " Preparando ;/";
     }
 }

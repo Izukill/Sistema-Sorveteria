@@ -1,21 +1,23 @@
 package model;
 
+import factory.Gelados;
+import observer.Notificador;
+import observer.Observer;
 import state.EstadoPedido;
 import state.PedidoRecebido;
 
-public class Pedido {
+public class Pedido{
 
-    private String descricao;
+    private Gelados sorvete;
     private Cliente cliente;
     private float preco;
     private EstadoPedido estado;
     private long id;
+    private Observer observer=new Observer();
 
-    public Pedido(Cliente cliente, String Descricao, float preco) {
-        this.descricao = Descricao;
-        this.preco = preco;
+    public Pedido(Cliente cliente, Gelados sorvete) {
+        this.sorvete = sorvete;
         this.cliente=cliente;
-        this.estado= new PedidoRecebido();
     }
 
 
@@ -27,12 +29,12 @@ public class Pedido {
         this.id = id;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public Gelados getGelado() {
+        return sorvete;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setGelado(Gelados sorvete) {
+        this.sorvete = sorvete;
     }
 
     public float getPreco() {
@@ -49,6 +51,7 @@ public class Pedido {
 
     public void setEstado(EstadoPedido estado) {
         this.estado = estado;
+        notificarCliente(estado.getNome());
     }
 
     public Cliente getCliente() {
@@ -58,4 +61,16 @@ public class Pedido {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
+
+    public void adicionarClienteObserver(){
+        observer.adicionarAssinante(cliente);
+    }
+
+    public void notificarCliente(String mensagem){
+        observer.notificar(mensagem);
+    }
+
+
+
+
 }
