@@ -3,8 +3,9 @@ package model;
 import state.EstadoPedido;
 import state.PedidoCancelado;
 import state.PedidoRecebido;
+import decorator.PedidoBase;
 
-public class Pedido {
+public class Pedido implements PedidoBase{
 
     private String pedido;
     private Cliente cliente;
