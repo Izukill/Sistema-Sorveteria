@@ -28,6 +28,7 @@ public class Fila {
 
     }
 
+    public void remover(PedidoBase pedido) { fila.remove(pedido); } // eu add
 
     public void add(Pedido pedido){
         fila.add(pedido);
