@@ -5,6 +5,6 @@ import model.Pedido;
 import java.util.List;
 
 public interface PedidoRepository {
-    long adicionarPedido(Pedido pedido);
+    void adicionarPedido(Pedido pedido);
     List<Pedido> lerPedidos();
 }

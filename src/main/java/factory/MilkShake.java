@@ -1,13 +1,15 @@
 package factory;
 
-public class MilkShake implements Gelados {
+import decorator.PedidoBase;
+
+public class MilkShake implements PedidoBase{
     @Override
-    public String getNome() {
+    public String getDescricao() {
         return "MilkShake";
     }
 
     @Override
-    public double getPreco() {
-        return 10.0;
+    public float getPreco() {
+        return 10.0f;
     }
 }

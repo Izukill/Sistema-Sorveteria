@@ -28,7 +28,6 @@ public class Fila {
 
     }
 
-    public void remover(PedidoBase pedido) { fila.remove(pedido); } // eu add
 
     public void add(Pedido pedido){
         fila.add(pedido);
@@ -51,6 +50,10 @@ public class Fila {
 
     }
 
+    public Pedido ultimo(){
+        return fila.getLast();
+    }
+
 
     @Override
     public String toString() {
@@ -65,7 +68,7 @@ public class Fila {
             Pedido pedido = fila.get(i);
             sb.append(i + 1).append(") ");
             sb.append("Cliente: ").append(pedido.getCliente().getNome()).append(" || ");
-            sb.append("Sorvete: ").append(pedido.getGelado().getNome()).append(" || ");
+            sb.append("Sorvete: ").append(pedido.getProduto().getDescricao()).append(" || ");
             sb.append("Estado: ").append(pedido.getEstado().getNome()).append("\n");
         }
 
@@ -74,13 +77,8 @@ public class Fila {
 
 
     public boolean vazia(){
-        int j=0;
-        for (int i = 0; i < Tamanho; i++) {
-            j++;
-        }
-        if (j==0){
-            return true;
-        }else return false;
+
+        return fila.isEmpty();
     }
 
 

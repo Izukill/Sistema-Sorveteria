@@ -101,7 +101,29 @@ public class Main {
 
                     if (fabrica != null) {
                         facade.fazerPedido(cliente, fabrica);
-                        System.out.println("🍧 Pedido feito com sucesso.");
+                        Pedido pedidoCriado = Fila.getInstancia().ultimo();// pega o último pedido da fila
+                        boolean adicionando = true;
+
+                        while (adicionando) {
+                            System.out.println("\nDeseja adicionar alguma cobertura?");
+                            System.out.println("1 - Chantilly");
+                            System.out.println("2 - Granulado");
+                            System.out.println("3 - Cobertura");
+                            System.out.println("4 - Finalizar pedido");
+                            System.out.print("Escolha uma opção: ");
+                            int escolha = scanner.nextInt();
+
+                            switch (escolha) {
+                                case 1 -> facade.adicionarChantilly(pedidoCriado);
+                                case 2 -> facade.adicionarGranulado(pedidoCriado);
+                                case 3 -> facade.adicionarCobertura(pedidoCriado);
+                                case 4 -> {
+                                    adicionando = false;
+                                    System.out.println("🍨 Pedido finalizado com sucesso!");
+                                }
+                                default -> System.out.println("❌ Opção inválida.");
+                            }
+                        }
                     }
                     break;
 
@@ -116,13 +138,7 @@ public class Main {
 
                 default:
                     System.out.println("❌ Opção inválida.");
-
-
             }
-
-
-
-
         }
 
         scanner.close();

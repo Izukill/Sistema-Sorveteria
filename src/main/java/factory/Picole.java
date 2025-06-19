@@ -1,13 +1,15 @@
 package factory;
 
-public class Picole implements Gelados {
+import decorator.PedidoBase;
+
+public class Picole implements PedidoBase {
     @Override
-    public String getNome() {
+    public String getDescricao() {
         return "Picolé";
     }
 
     @Override
-    public double getPreco() {
-        return 5.0;
+    public float getPreco() {
+        return 5.0f;
     }
 }

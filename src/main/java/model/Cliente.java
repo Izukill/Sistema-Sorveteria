@@ -4,7 +4,7 @@ import observer.Assinante;
 
 public class Cliente implements Assinante {
     private String nome;
-    private int Id;
+    private long Id;
 
 
     public Cliente(String nome) {
@@ -16,7 +16,7 @@ public class Cliente implements Assinante {
         Id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return Id;
     }
 

@@ -1,13 +1,15 @@
 package factory;
 
-public class Sorvete implements Gelados {
+import decorator.PedidoBase;
+
+public class Sorvete implements PedidoBase {
     @Override
-    public String getNome() {
+    public String getDescricao() {
         return "Sorvete";
     }
 
     @Override
-    public double getPreco() {
-        return 6.50;
+    public float getPreco() {
+        return 6.50f;
     }
 }

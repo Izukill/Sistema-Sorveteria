@@ -1,7 +1,9 @@
 package factory;
 
+import decorator.PedidoBase;
+
 public abstract class SorveteriaFactory {
 
-    public abstract Gelados criarGelado();
+    public abstract PedidoBase criarGelado();
 
 }
