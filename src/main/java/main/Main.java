@@ -1,34 +1,33 @@
-import command.FazerPedido;
-import command.HistoricoComandos;
+import command.*;
 import decorator.*;
-import model.Cliente;
-import model.Pedido;
+import model.*;
 import singleton.Fila;
+import strategy.*;
 
 public class Main {
     public static void main(String[] args) {
-
         Cliente cliente = new Cliente("João");
 
-        PedidoBase pedido = new Pedido(cliente, "Sorvete de chocolate", 5.00f);
+        Pedido pedido = new Pedido(cliente, "Sorvete de chocolate", 5.00f);
 
-        pedido = new Granulado(pedido);
-        pedido = new Chantilly(pedido);
-        pedido = new Cobertura(pedido);
+        pedido.setDescontoStrategy(new DescontoClienteFrequente());
 
-        FazerPedido fazerPedido = new FazerPedido(pedido);
+        PedidoBase pedidoDecorado = new Granulado(pedido);
+        pedidoDecorado = new Chantilly(pedidoDecorado);
+        pedidoDecorado = new Cobertura(pedidoDecorado);
+
+        Comando fazerPedido = new FazerPedido(pedido);
 
         HistoricoComandos historico = new HistoricoComandos();
-
         historico.executar(fazerPedido);
 
-        System.out.println("Fila atual de pedidos:");
+        System.out.println("\n=== Fila de Pedidos ===");
         System.out.println(Fila.getInstancia().imprimir());
 
-        System.out.println("\nDesfazendo último pedido...");
+        System.out.println("\nDesfazendo pedido...");
         historico.desfazer();
 
-        System.out.println("Fila após desfazer:");
+        System.out.println("\n=== Fila após desfazer ===");
         System.out.println(Fila.getInstancia().imprimir());
     }
 }

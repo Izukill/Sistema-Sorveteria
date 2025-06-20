@@ -1,40 +1,29 @@
 package model;
 
-import state.EstadoPedido;
-import state.PedidoCancelado;
-import state.PedidoRecebido;
 import decorator.PedidoBase;
+import state.EstadoPedido;
+import state.PedidoRecebido;
+import strategy.DescontoStrategy;
+import strategy.SemDesconto;
 
-public class Pedido implements PedidoBase{
+public class Pedido implements PedidoBase {
 
     private String pedido;
     private Cliente cliente;
-    private float preco;
+    private float precoOriginal;
     private EstadoPedido estado;
+    private DescontoStrategy descontoStrategy;
 
-    public Pedido(Cliente cliente, String pedido, float preco) {
+    public Pedido(Cliente cliente, String pedido, float precoOriginal) {
         this.pedido = pedido;
-        this.preco = preco;
-        this.cliente=cliente;
-        this.estado= new PedidoRecebido();
+        this.cliente = cliente;
+        this.precoOriginal = precoOriginal;
+        this.estado = new PedidoRecebido();
+        this.descontoStrategy = new SemDesconto();
     }
 
-
-
-    public String getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(String pedido) {
-        this.pedido = pedido;
-    }
-
-    public float getPreco() {
-        return preco;
-    }
-
-    public void setPreco(float preco) {
-        this.preco = preco;
+    public Cliente getCliente() {
+        return cliente;
     }
 
     public EstadoPedido getEstado() {
@@ -45,4 +34,42 @@ public class Pedido implements PedidoBase{
         this.estado = estado;
     }
 
+    public void setDescontoStrategy(DescontoStrategy descontoStrategy) {
+        this.descontoStrategy = descontoStrategy;
+    }
+
+    public DescontoStrategy getDescontoStrategy() {
+        return descontoStrategy;
+    }
+
+    public float getPrecoOriginal() {
+        return precoOriginal;
+    }
+
+    public void setPrecoOriginal(float precoOriginal) {
+        this.precoOriginal = precoOriginal;
+    }
+
+    @Override
+    public String getDescricao() {
+        return pedido;
+    }
+
+    @Override
+    public float getPreco() {
+        return descontoStrategy.calcularDesconto(precoOriginal);
+    }
+
+    public String getDescricaoDesconto() {
+        return descontoStrategy.getDescricao();
+    }
+
+    @Override
+    public String toString() {
+        return "Pedido de " + cliente.getNome() +
+                " | Produto: " + getDescricao() +
+                " | Preço com desconto: R$" + String.format("%.2f", getPreco()) +
+                " | Estado: " + estado.getNome() +
+                " | " + getDescricaoDesconto();
+    }
 }
