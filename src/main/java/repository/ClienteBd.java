@@ -17,7 +17,19 @@ public class ClienteBd implements ClienteRepository {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, cliente.getNome());
-            stmt.executeUpdate();
+
+
+
+            int affectedRows = stmt.executeUpdate();
+
+            //Atribui id ao cliente ao salvar no banco de dados (caso contrario todos ficam com id=0)
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        cliente.setId(generatedKeys.getLong(1));
+                    }
+                }
+            }
 
 
         } catch (SQLException e) {
@@ -27,8 +39,5 @@ public class ClienteBd implements ClienteRepository {
 
     }
 
-    @Override
-    public void lerCliente() {
 
-    }
 }

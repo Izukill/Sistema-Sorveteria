@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface PedidoRepository {
     void adicionarPedido(Pedido pedido);
-    List<Pedido> lerPedidos();
+    void atualizarPedido(Pedido pedido);
 }

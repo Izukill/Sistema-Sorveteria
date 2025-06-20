@@ -21,6 +21,8 @@ public class FazerPedido implements Comando {
         fila.add(this.pedido);
         this.pedido.setEstado(new PedidoRecebido());
 
+
+
     }
 
     @Override
