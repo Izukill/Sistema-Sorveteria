@@ -12,4 +12,10 @@ public class MilkShake implements PedidoBase{
     public float getPreco() {
         return 10.0f;
     }
+
+    public void setPreco(float valor){
+        return;
+    }
+
+
 }

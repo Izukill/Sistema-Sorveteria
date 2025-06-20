@@ -16,4 +16,10 @@ public abstract class AdicionalDecorator implements PedidoBase {
     public String getDescricao() {
         return pedidoDecorado.getDescricao();
     }
+
+    @Override
+    public void setPreco(float valor) {
+        pedidoDecorado.setPreco(valor);
+    }
+
 }

@@ -14,4 +14,9 @@ public class Cobertura extends AdicionalDecorator {
     public float getPreco() {
         return pedidoDecorado.getPreco() + 1.50f;
     }
+
+    @Override
+    public void setPreco(float valor) {
+        pedidoDecorado.setPreco(valor);
+    }
 }

@@ -1,33 +1,33 @@
 package main;
 
-
 import facade.SorveteriaFacade;
+import facade.PagamentoFacade;
 import factory.*;
 import model.Cliente;
 import model.Pedido;
 import repository.ClienteBd;
 import repository.PedidoBd;
+import repository.Servico;
 import singleton.Fila;
+import strategy.*;
 
 import java.util.Scanner;
 
 public class Main {
-
-
     public static void main(String[] args) {
 
-        //Instancia da Fila
-
-
-        //Instancias dos Factorys
+        // Instâncias dos Factories
         SorveteriaFactory picole = new PicoleFactory();
         SorveteriaFactory sorvete = new SorveteFactory();
         SorveteriaFactory milkshake = new MilkShakeFactory();
 
-
-        //Instancia do Facade
+        // Instâncias dos Facades
         SorveteriaFacade facade = new SorveteriaFacade();
 
+        // Instâncias dos Repositórios e Serviço
+        PedidoBd pedidoBd = new PedidoBd();
+        ClienteBd clienteBd = new ClienteBd();
+        Servico servico = new Servico(pedidoBd, clienteBd);
 
         Scanner scanner = new Scanner(System.in);
         boolean executando = true;
@@ -52,8 +52,9 @@ public class Main {
                     if (!Fila.getInstancia().vazia()) {
                         Pedido pedidoAtual = Fila.getInstancia().primeiro();
                         facade.avancarEstado(pedidoAtual);
+                        servico.atualizarPedido(pedidoAtual);
                     } else {
-                        System.out.println("⚠️ Fila vazia!");
+                        System.out.println("Fila vazia!");
                     }
                     break;
 
@@ -61,19 +62,20 @@ public class Main {
                     if (!Fila.getInstancia().vazia()) {
                         Pedido pedidoAtual = Fila.getInstancia().primeiro();
                         facade.cancelarPedido(pedidoAtual);
-                        System.out.println("❌ Pedido cancelado.");
+                        servico.atualizarPedido(pedidoAtual);
                         ultimoPedido = pedidoAtual;
                     } else {
-                        System.out.println("⚠️ Fila vazia!");
+                        System.out.println("Fila vazia!");
                     }
                     break;
 
                 case 3:
                     if (ultimoPedido != null) {
                         facade.refazerPedido(ultimoPedido);
-                        System.out.println("♻️ Pedido refeito.");
+                        servico.atualizarPedido(ultimoPedido);
+                        System.out.println("Pedido refeito.");
                     } else {
-                        System.out.println("⚠️ Nenhum pedido foi cancelado ainda.");
+                        System.out.println("Nenhum pedido foi cancelado ainda.");
                     }
                     break;
 
@@ -81,13 +83,14 @@ public class Main {
                     System.out.print("Nome do cliente: ");
                     String nome = scanner.nextLine();
                     Cliente cliente = new Cliente(nome);
+                    servico.salvarCliente(cliente);
 
                     System.out.println("Escolha o tipo de sorvete:");
                     System.out.println("1 - Picolé");
                     System.out.println("2 - Sorvete");
                     System.out.println("3 - Milkshake");
                     int tipo = scanner.nextInt();
-                    scanner.nextLine(); // limpar buffer
+                    scanner.nextLine();
 
                     SorveteriaFactory fabrica = switch (tipo) {
                         case 1 -> picole;
@@ -101,7 +104,7 @@ public class Main {
 
                     if (fabrica != null) {
                         facade.fazerPedido(cliente, fabrica);
-                        Pedido pedidoCriado = Fila.getInstancia().ultimo();// pega o último pedido da fila
+                        Pedido pedidoCriado = Fila.getInstancia().ultimo();
                         boolean adicionando = true;
 
                         while (adicionando) {
@@ -114,16 +117,47 @@ public class Main {
                             int escolha = scanner.nextInt();
 
                             switch (escolha) {
-                                case 1 -> facade.adicionarChantilly(pedidoCriado);
-                                case 2 -> facade.adicionarGranulado(pedidoCriado);
-                                case 3 -> facade.adicionarCobertura(pedidoCriado);
+                                case 1 -> facade.AdicionarDecorator(pedidoCriado,"chantilly");
+                                case 2 -> facade.AdicionarDecorator(pedidoCriado,"granulado");
+                                case 3 -> facade.AdicionarDecorator(pedidoCriado,"cobertura");
                                 case 4 -> {
                                     adicionando = false;
-                                    System.out.println("🍨 Pedido finalizado com sucesso!");
+                                    System.out.println("Pedido finalizado com sucesso!");
                                 }
-                                default -> System.out.println("❌ Opção inválida.");
+                                default -> System.out.println("Opção inválida.");
                             }
+
+
+                            }
+
+                        System.out.println("\nEscolha o tipo de desconto:");
+                        System.out.println("1 - Cliente frequente");
+                        System.out.println("2 - Desconto sazonal");
+                        System.out.println("3 - Sem desconto");
+                        System.out.print("Opção: ");
+
+
+                        PagamentoFacade pagamentoFacade = new PagamentoFacade(new SemDesconto());
+                        int tipoDesconto = scanner.nextInt();
+
+                        switch (tipoDesconto) {
+
+                            case 1 -> pagamentoFacade.setStrategy(new DescontoClienteFrequente());
+                            case 2 -> pagamentoFacade.setStrategy(new DescontoSazonal());
+                            case 3 -> pagamentoFacade.setStrategy(new SemDesconto());
+                            default -> {
+                                System.out.println("Opção inválida. Sem desconto aplicado.");
+                                pagamentoFacade.setStrategy(new SemDesconto());
+                            }
+
+
                         }
+
+                        float valorPedido= pagamentoFacade.pagamento(pedidoCriado);
+                        pagamentoFacade.notaPagamento(pedidoCriado);
+
+                        // Salvar pedido finalizado no banco de dados
+                        servico.salvarPedido(pedidoCriado);
                     }
                     break;
 
@@ -133,11 +167,11 @@ public class Main {
 
                 case 6:
                     executando = false;
-                    System.out.println("👋 Encerrando sorveteria.");
+                    System.out.println("Encerrando sorveteria.");
                     break;
 
                 default:
-                    System.out.println("❌ Opção inválida.");
+                    System.out.println("Opção inválida.");
             }
         }
 

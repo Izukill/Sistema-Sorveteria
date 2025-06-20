@@ -12,4 +12,8 @@ public class Sorvete implements PedidoBase {
     public float getPreco() {
         return 6.50f;
     }
+
+    public void setPreco(float valor){
+        return;
+    }
 }

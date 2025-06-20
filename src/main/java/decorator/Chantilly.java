@@ -14,4 +14,9 @@ public class Chantilly extends AdicionalDecorator {
     public float getPreco() {
         return pedidoDecorado.getPreco() + 2.25f;
     }
+
+    @Override
+    public void setPreco(float valor) {
+        pedidoDecorado.setPreco(valor);
+    }
 }

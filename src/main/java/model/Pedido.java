@@ -34,6 +34,10 @@ public class Pedido{
         return produto.getPreco();
     }
 
+    public void setPreco(float valor){
+        this.produto.setPreco(valor);
+    }
+
     public String getDescricao(){
         return produto.getDescricao();
     }

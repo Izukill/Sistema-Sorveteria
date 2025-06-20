@@ -12,4 +12,10 @@ public class Picole implements PedidoBase {
     public float getPreco() {
         return 5.0f;
     }
+
+    public void setPreco(float valor){
+        return;
+    }
+
+
 }

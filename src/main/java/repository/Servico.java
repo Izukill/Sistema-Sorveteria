@@ -9,18 +9,24 @@ public class Servico {
     private PedidoBd pedidoRepository;
     private ClienteBd clienteRepository;
 
-    public Servico(PedidoBd pedidoRepository, ClienteBd clienteRepositor) {
+    public Servico(PedidoBd pedidoRepository, ClienteBd clienteRepository) {
         this.pedidoRepository = pedidoRepository;
         this.clienteRepository = clienteRepository;
 
     }
 
-    public void Salvar(Cliente cliente, Pedido pedido){
+    public void salvarCliente(Cliente cliente){
 
         clienteRepository.adicionarCliente(cliente);
 
+    }
+
+    public void salvarPedido(Pedido pedido){
+
         pedidoRepository.adicionarPedido(pedido);
     }
+
+
 
     public void atualizarPedido(Pedido pedido){
 

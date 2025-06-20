@@ -5,7 +5,6 @@ import decorator.PedidoBase;
 import factory.SorveteriaFactory;
 import model.Cliente;
 import model.Pedido;
-import repository.Servico;
 import singleton.Fila;
 import state.PedidoEntrege;
 
@@ -14,8 +13,6 @@ public class SorveteriaFacade {
     private ComandoInvoker comandoInvoker=new ComandoInvoker();
 
     private Fila fila= Fila.getInstancia();
-
-   private Servico servicobd;
 
 
     public void desfazerComando(){
