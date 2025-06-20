@@ -2,7 +2,7 @@ package command;
 
 import java.util.Stack;
 
-public class HistoricoComandos {
+public class ComandoInvoker {
     private Stack<Comando> historico=new Stack<>();
 
     public void executar(Comando comando){

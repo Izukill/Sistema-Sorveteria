@@ -1,40 +1,56 @@
 package model;
 
+import decorator.PedidoBase;
+import observer.Observer;
 import state.EstadoPedido;
-import state.PedidoCancelado;
-import state.PedidoRecebido;
 
-public class Pedido {
+public class Pedido{
 
-    private String pedido;
+
     private Cliente cliente;
-    private float preco;
     private EstadoPedido estado;
 
-    public Pedido(Cliente cliente, String pedido, float preco) {
-        this.pedido = pedido;
-        this.preco = preco;
+    private PedidoBase produto;
+
+
+    private long id;
+    private Observer observer=new Observer();
+
+    public Pedido(Cliente cliente, PedidoBase produto) {
+        this.produto=produto;
         this.cliente=cliente;
-        this.estado= new PedidoRecebido();
     }
 
 
-
-    public String getPedido() {
-        return pedido;
+    public PedidoBase getProduto() {
+        return produto;
     }
 
-    public void setPedido(String pedido) {
-        this.pedido = pedido;
+    public void setProduto(PedidoBase produto) {
+        this.produto = produto;
     }
 
-    public float getPreco() {
-        return preco;
+    public float getPreco(){
+        return produto.getPreco();
     }
 
-    public void setPreco(float preco) {
-        this.preco = preco;
+    public void setPreco(float valor){
+        this.produto.setPreco(valor);
     }
+
+    public String getDescricao(){
+        return produto.getDescricao();
+    }
+
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
 
     public EstadoPedido getEstado() {
         return estado;
@@ -42,6 +58,26 @@ public class Pedido {
 
     public void setEstado(EstadoPedido estado) {
         this.estado = estado;
+        notificarCliente(estado.getNome());
     }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public void adicionarClienteObserver(){
+        observer.adicionarAssinante(cliente);
+    }
+
+    public void notificarCliente(String mensagem){
+        observer.notificar(mensagem);
+    }
+
+
+
 
 }

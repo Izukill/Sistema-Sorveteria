@@ -10,6 +10,6 @@ public class PedidoPronto implements EstadoPedido{
 
     @Override
     public String getNome() {
-        return "Pedido pronto :D";
+        return " Pronto :D";
     }
 }

@@ -11,6 +11,6 @@ public class PedidoEntrege implements EstadoPedido{
 
     @Override
     public String getNome() {
-        return "Pedido entregue ;)";
+        return " Entregue ;)";
     }
 }
